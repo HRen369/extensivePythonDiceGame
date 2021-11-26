@@ -34,7 +34,7 @@ def rollDiceList(dice, num):
 def rollDiceOnce(dice):
     return rollDiceList(dice,1)
 
-##******
+# NEEDS WORK
 def getDiceRollsMode(diceRollList):
     diceRollList.sort()
     currentModeTotal = 0
@@ -43,6 +43,7 @@ def getDiceRollsMode(diceRollList):
     for i in range(len(rollDiceList)-1):
         if rollDiceList[i] == rollDiceList[i+1]:
             mode += 1
+#
 
 def getDiceRollsSum(diceRollList):
     sum = 0
