@@ -2,6 +2,7 @@ import json
 import random
 
 def credits(infoPath):
+    """Prints the credits but requires a .json file"""
     with open(infoPath, 'r') as myfile:
         info = myfile.read()
     title = json.loads(info)
@@ -9,48 +10,54 @@ def credits(infoPath):
     print("-------------------------------")
     print(title["title"])
     print("\tBy",title["author"])
-    print("\tDate Last Modified", title["DateModified"])
+    print("\tDate Last Modified", title["dateModified"])
     print("-------------------------------")
 
 def creditsNoJSON():
+    """Prints the credits without .json file"""
     print("-------------------------------")
     print("DiceGame")
     print("\tBy Humberto Rendon")
-
     print("-------------------------------")
 
 def createDice(totalSides):
-    """
-    Return a dice dictionary with n amount of sides
-    """
-    return {
-        "sides": totalSides
-    }
+    """Return a dice dictionary with n amount of sides"""
+    return { "sides": totalSides }
 
 
 def getRandomNumber(dice):
+    """Returns a random integer between 1 and the sides of the dice"""
     return random.randint(1,dice["sides"])
 
 
 def rollDiceList(dice, num):
+    """Returns a list of random integer between 1 and the sides of the dice"""
     return [getRandomNumber(dice) for i in range(0,num) ]
 
 
 def rollDiceOnce(dice):
+    """Returns a list of random integer between 1 and the sides of the dice"""
     return rollDiceList(dice,1)
 
-# NEEDS WORK
 def getDiceRollsMode(diceRollList):
-    diceRollList.sort()
-    currentModeTotal = 0
-    mode = 0
+    rollDict = {}
+    maxCount = 0
+    maxRoll = ""
 
-    for i in range(len(rollDiceList)-1):
-        if rollDiceList[i] == rollDiceList[i+1]:
-            mode += 1
-# -------------------
+    for roll in diceRollList:
+        if str(roll) not in rollDict:
+            rollDict[str(roll)] = 1
+        else:
+            rollDict[str(roll)] += 1
+
+        if rollDict[str(roll)] > maxCount:
+            maxCount = rollDict[str(roll)]
+            maxRoll = str(roll)
+
+    return (maxRoll, maxCount)
 
 def getDiceRollsSum(diceRollList):
+    """Returns the sum from a list of dice rolls"""
     sum = 0
     for roll in diceRollList:
         sum += roll
@@ -58,16 +65,19 @@ def getDiceRollsSum(diceRollList):
     return sum
 
 def getDiceRollsMean(diceRollList):
+    """Returns the mean from the list of dice rolls"""
     sum = getDiceRollsSum(diceRollList)
     return sum / len(diceRollList)
 
 def printDiceRolls(diceRollList):
+    """Prints the list of dice rolls"""
     rollNum = 1
     for roll in diceRollList:
         print(f"Roll #{rollNum}: {roll}")
         rollNum += 1
 
 def csvRollList(fileName,diceRollList):
+    """Converts the list of dice rolls into a .csv file"""
     f = open(str(fileName+".csv"),"w")
     f.write("rollNum, rollResult\n")
     rollNum = 1
@@ -78,6 +88,7 @@ def csvRollList(fileName,diceRollList):
     f.close()
 
 def txtRollList(fileName,diceRollList):
+    """Converts the list of dice rolls into a .txt file"""
     f = open(str(fileName+".txt"),"w")
     rollNum = 1
 
@@ -88,17 +99,18 @@ def txtRollList(fileName,diceRollList):
     f.close()
 
 
-def simpleDiceGameTest():
+def TestSimpleDiceGame():
+    """A simple test of the game"""
     # Calling functions
     creditsNoJSON()
     myDice = createDice(6)
     timesRolled = 50
     rollList = rollDiceList(myDice,timesRolled)
-    printDiceRolls(rollList)
     csvRollList("rollList",rollList)
     txtRollList("rollList",rollList)
 
 def menuChoice():
+    creditsNoJSON()
     print("[ 1 ] Create Dice")
     print("[ 2 ] Roll Regular 6 Side Dice Once")
     print("[ R ] Repeat Message")
@@ -139,13 +151,23 @@ def menuChoice():
 
 
 def createGame():
-    pass
+    sides = int(input("Pick the number of sides for the dice: "))
+    myDice = createDice(sides)
+    timesRolled = int(input("How many times do you wan to roll the dice: "))
+    rollList = rollDiceList(myDice, timesRolled)
+    print("-------------------------------")
+    printDiceRolls(rollList)
+    print("-------------------------------")
 
-menuChoice()
+    txtAns = input("Write to an .txt file? ").lower()
+    csvAns = input("Write to an .csv file? ").lower()
+
+    if txtAns == "y" or txtAns == "yes":
+        txtRollList("rollListT", rollList)
+    
+    if csvAns == "y" or csvAns == "yes":
+        csvRollList("rollListC", rollList)
 
 
-
-"""
-myDice = int(input("Pick the number of sides for the dice"))
-timesRolled = int(input("How many times do you wan to roll the dice"))
-"""
+if __name__ == '__main__':
+    menuChoice()
