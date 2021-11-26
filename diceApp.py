@@ -9,15 +9,20 @@ def credits(infoPath):
     print("-------------------------------")
     print(title["title"])
     print("\tBy",title["author"])
+    print("\tDate Last Modified", title["DateModified"])
     print("-------------------------------")
 
 def creditsNoJSON():
     print("-------------------------------")
     print("DiceGame")
     print("\tBy Humberto Rendon")
+
     print("-------------------------------")
 
 def createDice(totalSides):
+    """
+    Return a dice dictionary with n amount of sides
+    """
     return {
         "sides": totalSides
     }
@@ -43,7 +48,7 @@ def getDiceRollsMode(diceRollList):
     for i in range(len(rollDiceList)-1):
         if rollDiceList[i] == rollDiceList[i+1]:
             mode += 1
-#
+# -------------------
 
 def getDiceRollsSum(diceRollList):
     sum = 0
@@ -143,8 +148,4 @@ menuChoice()
 """
 myDice = int(input("Pick the number of sides for the dice"))
 timesRolled = int(input("How many times do you wan to roll the dice"))
-
-
-
-
 """
