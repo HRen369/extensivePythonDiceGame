@@ -2,4 +2,3 @@
 Dice game written in python
 
 Created with Pycharm
-----------------------------------------------------------
